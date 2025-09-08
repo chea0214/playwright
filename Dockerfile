@@ -1,4 +1,4 @@
-FROM python:3.12-bookworm
+FROM python:3.10-slim
 
 RUN pip install playwright && \
     playwright install --with-deps
