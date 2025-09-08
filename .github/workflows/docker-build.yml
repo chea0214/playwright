@@ -1,0 +1,17 @@
+name: Docker Build & Download
+on: [workflow_dispatch]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: docker build -t local-image .
+      - name: Save image as artifact
+        run: |
+          docker save local-image -o image.tar
+          gzip image.tar
+      - uses: actions/upload-artifact@v3
+        with:
+          name: docker-image
+          path: image.tar.gz
