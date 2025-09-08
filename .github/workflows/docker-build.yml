@@ -2,14 +2,14 @@ name: Docker Build & Download
 on: [workflow_dispatch]
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: debian
     steps:
       - uses: actions/checkout@v4
       - name: Build Docker image
-        run: docker build -t local-image .
+        run: docker build -t local-playwright .
       - name: Save image as artifact
         run: |
-          docker save local-image -o image.tar
+          docker save local-playwright -o image.tar
           gzip image.tar
       - uses: actions/upload-artifact@v4
         with:
