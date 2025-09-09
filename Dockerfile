@@ -3,9 +3,5 @@ FROM python:3.10-slim
 RUN pip install --no-cache-dir playwright && \
     playwright install chromium && \
     apt-get update && apt-get install -y \
-    libglib2.0-0 libgobject2.0-0 libnspr4 libnss3 libnssutil3 libsmime3 \
-    libdbus-glib-1-0 libdbus-1-3 libatk1.0-0 libatk-bridge-2.0-0 \
-    libcups2 libexpat1 libxcb1 libxkbcommon0 libatspi2.0-0 \
-    libx11-6 libxcomposite1 libxdamage1 libxext6 libxfixes3 \
-    libxrandr2 libgbm1 libcairo2 libpango1.0-0 libasound2 && \
+    libglib-2.0.so.0 libgobject-2.0.so.0 libnspr4.so libnss3.so libnssutil3.so libsmime3.so libgio-2.0.so.0 libdbus-1.so.3 libatk-1.0.so.0 libatk-bridge-2.0.so.0 libcups.so.2 libexpat.so.1 libxcb.so.1 libxkbcommon.so.0 libatspi.so.0 libX11.so.6  libXcomposite.so.1 libXdamage.so.1 libXext.so.6 libXfixes.so.3 libXrandr.so.2 libgbm.so.1 libcairo.so.2 libpango-1.0.so.0 libasound.so.2 && \
     rm -rf /var/lib/apt/lists/*
