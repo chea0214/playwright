@@ -1,5 +1,4 @@
-# 运行阶段 - 基于Alpine的最小化镜像
-FROM python:3.10-alpine
+FROM python:3.10-slim
 
 RUN pip install --no-cache-dir playwright && \
     playwright install chromium && \
