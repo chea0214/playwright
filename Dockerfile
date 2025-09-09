@@ -1,8 +1,8 @@
 # 构建阶段 - 使用官方Playwright基础镜像
-FROM mcr.microsoft.com/playwright/python:v1.55.0-jammy AS builder
+FROM mcr.microsoft.com/playwright/python:v1.40.0-jammy AS builder
 
 WORKDIR /app
-RUN pip install --user playwright==1.55.0
+RUN pip install --user playwright==1.40.0
 
 # 运行阶段 - 基于Alpine的最小化镜像
 FROM python:3.10-alpine
