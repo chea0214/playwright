@@ -10,7 +10,7 @@ jobs:
       - name: Save image as artifact
         run: |
           docker save local-playwright -o playwright.tar
-          gzip image.tar
+          gzip playwright.tar
       - uses: actions/upload-artifact@v4
         with:
           name: docker-playwright
