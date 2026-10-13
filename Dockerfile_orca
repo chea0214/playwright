@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
 # 克隆并构建OrcaSlicer
 WORKDIR /app
 RUN git clone https://github.com/OrcaSlicer/OrcaSlicer.git
-# WORKDIR /app/OrcaSlicer
+WORKDIR /app/OrcaSlicer
 RUN ls -ls
 RUN ./build_linux.sh -dsi
 
