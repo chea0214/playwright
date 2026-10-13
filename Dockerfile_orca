@@ -1,27 +1,28 @@
 FROM ubuntu:24.04
 ENV DEBIAN_FRONTEND=noninteractive
 
-# 安装 OrcaSlicer AppImage 运行必需依赖
+# 安装运行依赖 + bsdtar（用来直接提取AppImage，不需要FUSE）
 RUN apt-get update && apt-get install -y \
     wget \
     libgl1 \
     libgtk-3-0 \
+    libarchive-tools \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt/orca
 
-# 下载官方 v2.4.2 Linux AppImage
-RUN wget -q https://github.com/SoftFever/OrcaSlicer/releases/download/v2.4.2/OrcaSlicer-v2.4.2-linux-x64.AppImage \
+# 下载 OrcaSlicer v2.4.2 AppImage
+RUN wget --tries=3 --timeout=30 -q https://github.com/SoftFever/OrcaSlicer/releases/download/v2.4.2/OrcaSlicer-v2.4.2-linux-x64.AppImage \
     && chmod +x OrcaSlicer-v2.4.2-linux-x64.AppImage \
-    # 解压AppImage到 squashfs-root
-    && ./OrcaSlicer-v2.4.2-linux-x64.AppImage --appimage-extract
+    # 核心：用bsdtar直接解压，跳过FUSE挂载！
+    && mkdir squashfs-root \
+    && bsdtar -xf OrcaSlicer-v2.4.2-linux-x64.AppImage -C squashfs-root
 
-# 将orca-slicer CLI加入PATH
+# 把orca-slicer CLI加入PATH
 ENV PATH="/opt/orca/squashfs-root/usr/bin:${PATH}"
 
-# 清理安装包，减小镜像大小
+# 删除原AppImage压缩包，减小镜像
 RUN rm OrcaSlicer-v2.4.2-linux-x64.AppImage
 
-# 默认测试命令，构建后验证是否正常
+# 验证：容器启动默认打印帮助
 CMD ["orca-slicer", "--help"]
-
