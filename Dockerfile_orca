@@ -1,19 +1,16 @@
-FROM ubuntu:26.04
+FROM ubuntu:24.04
+ENV DEBIAN_FRONTEND=noninteractive
 
-# 安装依赖
+# orca-slicer CLI运行时依赖（关闭GUI后依赖精简）
 RUN apt-get update && apt-get install -y \
-    git cmake gcc g++ make libgl1-mesa-dev \
-    libglu1-mesa-dev libgtk-3-dev libwxgtk3.2-dev \
+    libgl1 \
+    libgtk-3-0 \
     && rm -rf /var/lib/apt/lists/*
 
-# 克隆并构建OrcaSlicer
-WORKDIR /app
-RUN git clone https://github.com/OrcaSlicer/OrcaSlicer.git
-WORKDIR /app/OrcaSlicer
-RUN ls -ls
-RUN ./build_linux.sh -dsi
+WORKDIR /opt/orca
 
-# 设置工作目录
-WORKDIR /data
-ENTRYPOINT ["/app/OrcaSlicer/build/OrcaSlicer"]
-CMD ["--help"]
+# 从CI编译产物复制orca-slicer二进制
+COPY build/Release/orca-slicer /usr/local/bin/orca-slicer
+
+# 验证
+CMD ["orca-slicer", "--help"]
